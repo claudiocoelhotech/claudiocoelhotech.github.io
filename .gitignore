@@ -1,0 +1,18 @@
+# sistema operacional
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+
+# editores
+.vscode/
+.idea/
+*.code-workspace
+*~
+*.swp
+
+# rascunhos e backups
+*.bak
+*.tmp
+/rascunho/
