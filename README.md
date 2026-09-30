@@ -1,130 +1,91 @@
 # claudiocoelhotech.github.io
 
-Site pessoal de **Cláudio Coelho** — Gerente de Projetos, Gestão de Contratos, Setor Público e Tecnologia.
+Site pessoal de Cláudio Coelho, publicado em <https://claudiocoelhotech.github.io>.
 
-No ar em **<https://claudiocoelhotech.github.io>**
+Aplicação de página única, sem build e sem dependências em runtime, entregue como um
+documento HTML autossuficiente e hospedada no GitHub Pages.
 
 ---
 
-## O que é
+## Visão geral técnica
 
-Uma página única, em três telas navegáveis sem recarregar (`_inicio`, `_sobre-mim`, `_contato`),
-construída como um arquivo HTML autossuficiente e publicada pelo GitHub Pages.
-
-A estética vem do design system que uso nos meus conteúdos no Instagram e no TikTok
-([@claudiocoelho.tech](https://www.instagram.com/claudiocoelho.tech/)): fundo carvão quente,
-laranja como única cor de destaque, tipografia monoespaçada nos rótulos e apresentação do
-conteúdo como código Python.
-
-## Decisões de projeto
-
-| Decisão | Motivo |
+| | |
 | --- | --- |
-| Arquivo único, sem build | Nada para compilar, instalar ou manter atualizado. Publicar é copiar um arquivo. |
-| Sem framework e sem dependências em runtime | Menos superfície de ataque, menos peso, nenhuma quebra por atualização de terceiros. |
-| CSS e JavaScript embutidos | Uma requisição HTTP para a página inteira. |
-| Logos em base64 dentro do HTML | Não dependem de host externo e não quebram se algum link morrer. |
-| Google Fonts como única origem externa | Único recurso de terceiros; declarado explicitamente na CSP. |
-| Tema escuro fixo | O site tem uma identidade visual definida, não um tema que acompanha o sistema. |
+| **Tipo** | Single Page Application estática, três rotas, sem recarga de página |
+| **Linguagens** | HTML5, CSS3, JavaScript (sintaxe ES5, APIs de DOM modernas) |
+| **Frameworks** | Nenhum |
+| **Dependências em runtime** | Nenhuma além de duas famílias tipográficas do Google Fonts |
+| **Processo de build** | Nenhum no repositório — o artefato publicado é o próprio fonte |
+| **Artefato** | `index.html`, 313 KB, uma única requisição para a aplicação inteira |
+| **Hospedagem** | GitHub Pages, branch `main`, diretório raiz |
+| **TLS** | Certificado e redirecionamento HTTP→HTTPS providos pelo GitHub |
+| **Política de segurança** | CSP por hash SHA-256, sem `unsafe-inline` e sem `unsafe-eval` |
 
-## Estrutura
+## Documentação
+
+| Documento | Conteúdo |
+| --- | --- |
+| [`docs/architecture.md`](docs/architecture.md) | Composição do documento, modelo de renderização, roteamento, sistema de revelação na rolagem, pipeline de assets e o acoplamento entre a CSP e o conteúdo |
+| [`docs/design-system.md`](docs/design-system.md) | Tokens de cor, escala tipográfica, espaçamento, inventário de componentes, motion e razões de contraste medidas |
+| [`docs/tech-stack.md`](docs/tech-stack.md) | Linguagens, APIs do navegador em uso, tipografia, hospedagem, ferramental de autoria e matriz de compatibilidade |
+| [`docs/conventions.md`](docs/conventions.md) | Convenções de nomenclatura de CSS e JavaScript, organização da folha de estilos e padrão de commits |
+| [`SECURITY.md`](SECURITY.md) | Superfície de ataque, medidas aplicadas, limitações do GitHub Pages e canal de reporte |
+| [`LICENSE`](LICENSE) | Direitos sobre conteúdo, código e marcas de terceiros |
+
+## Estrutura do repositório
 
 ```
 .
-├── index.html      # o site inteiro: markup, CSS, JavaScript e imagens
-├── robots.txt      # liberação para indexação + apontador do sitemap
-├── sitemap.xml     # uma URL, para o Google e o Bing
-├── README.md       # este arquivo
-├── SECURITY.md     # política de segurança e o que está endurecido
-├── LICENSE         # direitos sobre o conteúdo e as marcas de terceiros
-└── .nojekyll       # desliga o processamento Jekyll no GitHub Pages
+├── index.html              artefato publicado: markup, CSS, JS e imagens
+├── robots.txt              diretivas de indexação e apontador do sitemap
+├── sitemap.xml             uma URL canônica
+├── .nojekyll               desliga o pipeline Jekyll do GitHub Pages
+├── .gitignore
+├── README.md
+├── SECURITY.md
+├── LICENSE
+└── docs/
+    ├── architecture.md
+    ├── design-system.md
+    ├── tech-stack.md
+    └── conventions.md
 ```
 
-## Tecnologias
+## Ambiente local
 
-- HTML5 semântico
-- CSS moderno: custom properties, grid, flexbox, `clamp()`, `env(safe-area-inset-*)`, marquee por `@keyframes`
-- JavaScript sem bibliotecas: `IntersectionObserver` para a revelação na rolagem, `requestAnimationFrame` para a contagem dos números, `Clipboard API` para os botões de copiar
-- Fontes [Archivo](https://fonts.google.com/specimen/Archivo) e [JetBrains Mono](https://fonts.google.com/specimen/JetBrains+Mono)
-- Hospedagem: GitHub Pages
-
-## Rodando localmente
-
-Como não há build, basta abrir o arquivo:
+Não há instalação, transpilação ou bundling. Abrir o arquivo já é suficiente para a maior
+parte do trabalho:
 
 ```bash
-# Windows
-start index.html
+start index.html          # Windows
 ```
 
-Para um ambiente mais fiel ao de produção, sirva por HTTP — algumas APIs do navegador
-se comportam diferente em `file://`:
+Para um ambiente fiel ao de produção — origem HTTP, mesma resolução de caminhos relativos
+e mesmo comportamento de `fetch` e de política de origem:
 
 ```bash
 python -m http.server 8000
-# depois abra http://localhost:8000
+# http://localhost:8000
 ```
 
-## Onde mexer no conteúdo
+## Publicação
 
-Tudo vive no `index.html`. Os pontos de entrada:
-
-| O que | Onde procurar |
-| --- | --- |
-| Paleta, fontes, espaçamentos | bloco `:root` no topo da `<style>` |
-| Texto do hero e dos números | `<section class="screen" id="screen-inicio">` |
-| Logos dos órgãos atendidos | `<div class="logo-track">` — cada `<div class="logo-chip">` |
-| Resumo profissional | `<div class="pane" data-pane="perfil.py">` |
-| Cases e prêmios | `<aside class="sidepanel">` da tela `_sobre-mim` |
-| Ferramentas e competências | faixas `<section class="band reveal">` da tela `_sobre-mim` |
-| Contatos e redes | `<aside class="contact-rail">` |
-
-Os logos estão embutidos como `data:image/png;base64`. Para trocar um, substitua a string
-base64 dentro do `<img>` correspondente. Os arquivos são recortados do fundo branco,
-normalizados para o mesmo peso óptico e exibidos em escala de cinza, com a cor voltando no hover.
-
-> **Atenção ao mexer no `index.html`:** a página declara uma Content-Security-Policy baseada em
-> hashes do CSS e do JavaScript embutidos. **Qualquer alteração dentro de `<style>` ou `<script>`
-> invalida o hash e o navegador passa a bloquear o bloco alterado.** Veja
-> [SECURITY.md](SECURITY.md#recalculando-os-hashes-da-csp) para recalcular.
-
-## Publicando
-
-O GitHub Pages republica sozinho a cada push na branch `main`:
+O GitHub Pages reconstrói a cada push em `main`. Não há workflow customizado no repositório;
+o deploy é o `pages-build-deployment` padrão do GitHub.
 
 ```bash
 git add .
-git commit -m "atualiza o site"
+git commit -m "..."
 git push
 ```
 
-A publicação leva de alguns segundos a dois minutos. O status aparece em
-**Settings → Pages** e na aba **Actions** do repositório.
+Latência típica entre o push e a página servida: de 20 segundos a 2 minutos. O status fica em
+**Settings → Pages** e na aba **Actions**.
 
-## Acessibilidade
+## Restrição operacional
 
-- Contraste verificado: o texto secundário (`#A0948A`) atinge 6.4:1 sobre o fundo, e o laranja
-  de destaque (`#EE6B1F`) atinge 6.0:1 — ambos acima do mínimo AA de 4.5:1 para texto normal
-- Navegação por teclado com foco visível (`:focus-visible` com contorno laranja)
-- `prefers-reduced-motion` respeitado: todas as animações são desligadas e nenhum conteúdo
-  fica preso invisível esperando a rolagem
-- `aria-current` na navegação, `aria-label` nos links de ícone, `aria-hidden` na cópia
-  duplicada dos logos que só existe para o loop da esteira
-- Sem dependência de JavaScript para ler o conteúdo: a revelação na rolagem só é ativada
-  quando o navegador confirma suporte a `IntersectionObserver`, e um temporizador de segurança
-  devolve tudo caso o observador não dispare
-
-## Domínio próprio
-
-Para servir em `claudiocoelho.tech` em vez do endereço do GitHub:
-
-1. **Settings → Pages → Custom domain**, informe o domínio e salve
-2. No registrador, crie quatro registros `A` do domínio raiz apontando para
-   `185.199.108.153`, `185.199.109.153`, `185.199.110.153` e `185.199.111.153`
-3. Crie um `CNAME` de `www` apontando para `claudiocoelhotech.github.io`
-4. Marque **Enforce HTTPS** depois que o certificado for emitido
-5. Atualize `<link rel="canonical">`, `og:url`, o `sitemap.xml` e o `robots.txt` para o novo endereço
-
-## Licença
-
-Veja [LICENSE](LICENSE). Resumindo: o conteúdo é meu e os logos são de seus respectivos titulares.
+> A CSP declara hashes SHA-256 dos blocos `<style>` e `<script>` embutidos. Editar qualquer
+> um desses blocos invalida o hash correspondente e o navegador passa a recusar o bloco.
+> O procedimento de recálculo está em
+> [`SECURITY.md`](SECURITY.md#recalculando-os-hashes-da-csp) e a explicação do acoplamento
+> em [`docs/architecture.md`](docs/architecture.md#acoplamento-entre-csp-e-conteúdo).
