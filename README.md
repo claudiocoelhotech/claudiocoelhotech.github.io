@@ -1,8 +1,8 @@
-# claudiolucasfc.github.io
+# claudiocoelhotech.github.io
 
 Site pessoal de Cláudio Coelho — Gerente de Projetos, Gestão de Contratos, Setor Público e Tecnologia.
 
-Publicado com GitHub Pages em <claudiocoelhotech.github.io>.
+Publicado com GitHub Pages em <https://claudiocoelhotech.github.io>.
 
 ## Estrutura
 
