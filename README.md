@@ -19,7 +19,7 @@ documento HTML autossuficiente e hospedada no GitHub Pages.
 | **Artefato** | `index.html`, 313 KB, uma única requisição para a aplicação inteira |
 | **Hospedagem** | GitHub Pages, branch `main`, diretório raiz |
 | **TLS** | Certificado e redirecionamento HTTP→HTTPS providos pelo GitHub |
-| **Política de segurança** | CSP por hash SHA-256, sem `unsafe-inline` e sem `unsafe-eval` |
+| **Content Security Policy** | Hashes SHA-256 dos blocos embutidos, sem `unsafe-inline` e sem `unsafe-eval` |
 
 ## Documentação
 
@@ -29,7 +29,6 @@ documento HTML autossuficiente e hospedada no GitHub Pages.
 | [`docs/design-system.md`](docs/design-system.md) | Tokens de cor, escala tipográfica, espaçamento, inventário de componentes, motion e razões de contraste medidas |
 | [`docs/tech-stack.md`](docs/tech-stack.md) | Linguagens, APIs do navegador em uso, tipografia, hospedagem, ferramental de autoria e matriz de compatibilidade |
 | [`docs/conventions.md`](docs/conventions.md) | Convenções de nomenclatura de CSS e JavaScript, organização da folha de estilos e padrão de commits |
-| [`SECURITY.md`](SECURITY.md) | Superfície de ataque, medidas aplicadas, limitações do GitHub Pages e canal de reporte |
 | [`LICENSE`](LICENSE) | Direitos sobre conteúdo, código e marcas de terceiros |
 
 ## Estrutura do repositório
@@ -42,7 +41,6 @@ documento HTML autossuficiente e hospedada no GitHub Pages.
 ├── .nojekyll               desliga o pipeline Jekyll do GitHub Pages
 ├── .gitignore
 ├── README.md
-├── SECURITY.md
 ├── LICENSE
 └── docs/
     ├── architecture.md
@@ -86,6 +84,5 @@ Latência típica entre o push e a página servida: de 20 segundos a 2 minutos. 
 
 > A CSP declara hashes SHA-256 dos blocos `<style>` e `<script>` embutidos. Editar qualquer
 > um desses blocos invalida o hash correspondente e o navegador passa a recusar o bloco.
-> O procedimento de recálculo está em
-> [`SECURITY.md`](SECURITY.md#recalculando-os-hashes-da-csp) e a explicação do acoplamento
-> em [`docs/architecture.md`](docs/architecture.md#acoplamento-entre-csp-e-conteúdo).
+> O acoplamento e o procedimento de recálculo estão em
+> [`docs/architecture.md`](docs/architecture.md#acoplamento-entre-csp-e-conteúdo).
