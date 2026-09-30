@@ -121,12 +121,31 @@ Isso torna impossível executar script injetado, e ao mesmo tempo cria um acopla
 o bloco. O sintoma é a página abrir sem estilo ou sem interatividade, com
 `Refused to apply/execute` no console.
 
-O procedimento de recálculo está em
-[`../SECURITY.md`](../SECURITY.md#recalculando-os-hashes-da-csp). A verificação é abrir o
-console e confirmar que não há linha começando com `Refused to`.
-
 Duas alternativas foram consideradas e descartadas: `'unsafe-inline'` anula o benefício, e
 `nonce` exige gerar valor por requisição, o que um host estático não faz.
+
+### Recalculando os hashes
+
+Rode na pasta do projeto depois de qualquer edição dentro de `<style>` ou `<script>`:
+
+```python
+import re, base64, hashlib
+
+doc = open("index.html", encoding="utf-8").read()
+sha = lambda t: "'sha256-" + base64.b64encode(hashlib.sha256(t.encode()).digest()).decode() + "'"
+
+estilos = re.findall(r"<style\b[^>]*>(.*?)</style>",   doc, re.S)
+scripts = re.findall(r"<script\b[^>]*>(.*?)</script>", doc, re.S)
+
+print("style-src ", " ".join(sha(s) for s in estilos), "https://fonts.googleapis.com")
+print("script-src", " ".join(sha(s) for s in scripts))
+```
+
+Substitua as duas diretivas na tag `<meta http-equiv="Content-Security-Policy">` pelo que
+saiu e recarregue com o cache limpo.
+
+**Verificação:** abra o console do navegador (F12) e recarregue. Se não houver nenhuma linha
+começando com `Refused to`, a política está válida.
 
 ## Estado
 

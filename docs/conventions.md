@@ -78,7 +78,7 @@ classe é uma mudança de estilo e não pode quebrar comportamento.
 
 | Escopo | Convenção | Exemplos |
 | --- | --- | --- |
-| Arquivos especiais do GitHub, na raiz | `SCREAMING_CASE` | `README.md`, `SECURITY.md`, `LICENSE` |
+| Arquivos especiais do GitHub, na raiz | `SCREAMING_CASE` | `README.md`, `LICENSE` |
 | Documentação em `docs/` | `kebab-case`, em inglês | `architecture.md`, `design-system.md`, `tech-stack.md`, `conventions.md` |
 | Arquivos servidos | minúsculas | `index.html`, `robots.txt`, `sitemap.xml` |
 | Conteúdo dos documentos | Português | — |
@@ -116,7 +116,7 @@ Não há convenção de prefixo tipo `feat:` ou `fix:` — o repositório tem um
 
 1. Localize a região pelo mapa em [`architecture.md`](architecture.md#composição-do-documento)
 2. Se tocou em `<style>` ou `<script>`, **recalcule os hashes da CSP**
-   ([procedimento](../SECURITY.md#recalculando-os-hashes-da-csp))
+   ([procedimento](architecture.md#recalculando-os-hashes))
 3. Abra o arquivo, pressione F12 e recarregue: o console não pode ter nenhuma linha
    começando com `Refused to`
 4. Verifique as três telas e as duas larguras de quebra (1100px e 820px)
